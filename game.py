@@ -3,63 +3,89 @@
 This module calls upon gamefunctions.py and runs each and every function multiple times.
 
 Author: Jake Gascon
-Date: 9.29.2024
+Date: 10.27.2024
 Assignment: Project Adventure Functions """
+from math import floor
+from operator import truediv
 from gamefunctions import *
 
+#set global variables for money, gold and max health
+gold = 10
+health = 30
+maxHealth = 30
+
+def option_handler(option):
+    # Fight Monster
+    if option == 1:
+        fight_monster()
+    # Sleep (Restore HP for the cost of 5 gold)
+    elif option == 2:
+        sleep()
+
+def fight_monster():
+    global health
+    global gold
+    #generate a new random monster from my list
+    my_monster = new_random_monster()
+    print(f"Watch out! A {my_monster['name']} appears!")
+
+    #fight the monster
+    while True:
+        fight_run_choice = int(input(f"Would you like to fight this {my_monster['name']} (1) or run away (2)?"))
+        if fight_run_choice == 1:
+            #calculate your hit
+            damage_dealt = int(random.random() * 10)
+            #calculate opponents hit
+            damage_taken = int(random.random() * my_monster['power'])
+            my_monster['health'] -= damage_dealt
+            #player strikes first so if the monster is dead the player wins
+            if my_monster['health'] <= 0:
+                #calculate money earned
+                money_earned = my_monster['money']
+                #give money to the player
+                gold += money_earned
+                print(f"You killed the {my_monster['name']} and earned {money_earned} gold!")
+                break
+
+            #check if the player died
+            health -= damage_taken
+            if health <= 0:
+                print("Ohh no, you died...")
+                break
+            #print totals
+            display_fight_statistics(damage_dealt, damage_taken, health, my_monster['health'], {my_monster['name']})
+        else:
+            print("You run away!")
+            break
+
+def display_fight_statistics(damage_dealt, damage_taken, player_health, monster_health, monster_name):
+    print(f"You hit a {damage_dealt} while the {monster_name} hit a {damage_taken} on you.")
+    print(f"Your health is now at {player_health}. The {monster_name}'s health is now at {monster_health}.")
+
+def sleep():
+    global gold
+    global health
+    if gold >= 5:
+        print("\nYou feel refreshed, however your pockets feel a little more empty than before...")
+        health = maxHealth
+        gold -= 5
+        print(gold)
+    else:
+        print("\nSleeping is not an option, get back in and fight!")
+
 if __name__ == '__main__':
-    #show that you can afford the full quantity
-    num_purchased, leftover_money = purchase_item(2, 20, 5)
-    print(f'Quantity Purchased = {num_purchased}')
-    print(f'Money Remaining = {leftover_money}')
-    print()
+    choice = 0
+    #Loop through the game if the player has not quit
+    while choice != 3:
+        # Get the user fight options and send in the current health and gold values, validate input
+        while True:
+            get_user_options(health, gold)
+            choice = int(input())
 
-    #show that only some items are purchased if you cant afford the full quantity
-    num_purchased, leftover_money = purchase_item(2, 5, 3)
-    print(f'Quantity Purchased = {num_purchased}')
-    print(f'Money Remaining = {leftover_money}')
-    print()
+            #validate that the user entered a valid option and if not keep looping
+            if choice in range (1, 4):
+                break
+            else:
+                print("Invalid Selection, please try again.\n")
 
-    #show that the default value of 1 works
-    num_purchased, leftover_money = purchase_item(2, 20)
-    print(f'Quantity Purchased = {num_purchased}')
-    print(f'Money Remaining = {leftover_money}')
-    print()
-
-    #generate random monster
-    my_monster = new_random_monster()
-    print(my_monster['name'])
-    print(my_monster['description'])
-    print(my_monster['health'])
-    print(my_monster['power'])
-    print(my_monster['money'])
-    print()
-
-    # generate random monster
-    my_monster = new_random_monster()
-    print(my_monster['name'])
-    print(my_monster['description'])
-    print(my_monster['health'])
-    print(my_monster['power'])
-    print(my_monster['money'])
-    print()
-
-    # generate random monster
-    my_monster = new_random_monster()
-    print(my_monster['name'])
-    print(my_monster['description'])
-    print(my_monster['health'])
-    print(my_monster['power'])
-    print(my_monster['money'])
-    print()
-
-    #Print hello centered with the name
-    print_welcome('Jake', 15)
-    print_welcome('Ember', 20)
-    print_welcome('Whiskey', 30)
-    print()
-
-    #Print the shop menu
-    print_shop_menu("Apple", 31, "Pear", 1.234)
-    print_shop_menu("Egg", .23, "Bag of Oats", 12.34)
-    print_shop_menu("Pineapple", 3.25, "Chicken", 100.378)
+        option_handler(choice)

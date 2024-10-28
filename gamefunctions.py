@@ -53,23 +53,23 @@ def new_random_monster():
     spider_dict = {
         "name": "Spider",
         "description": "A giant spider with dripping fangs and glowing eyes. It moves toward you silently, its legs tapping the ground as it prepares to strike.",
-        "health": random.randint(5, 10),
-        "power": random.randint(1, 3),
-        "money": format(random.random() * 10, ".2f")
+        "health": random.randint(1, 5),
+        "power": random.randint(1, 1),
+        "money": int(random.random() * 10)
     }
     gargoyle_dict = {
         "name": "Gargoyle",
         "description": "Perched on a ruined tower, the gargoyle’s eyes glow red as it awakens. It spreads its wings and dives at you, claws extended.",
-        "health": random.randint(50, 70),
-        "power": random.randint(50, 100),
-        "money": format(random.random() * 100, ".2f")
+        "health": random.randint(10, 20),
+        "power": random.randint(3, 5),
+        "money": int(random.random() * 50)
     }
     hydra_dict = {
         "name": "Hydra",
         "description": "A two-headed hydra slithers from the swamp, each head snapping with razor-sharp teeth. Its scaly body coils, ready to strike from both sides.",
-        "health": random.randint(200, 450),
-        "power": random.randint(150, 300),
-        "money": format(random.random() * 10000, ".2f")
+        "health": random.randint(20, 45),
+        "power": random.randint(5, 7),
+        "money": int(random.random() * 100)
     }
 
     #add the three monster types to the monster list
@@ -185,6 +185,9 @@ def test_functions():
     print_shop_menu("Egg", .23, "Bag of Oats", 12.34)
     print_shop_menu("Pineapple", 3.25, "Chicken", 100.378)
 
-if __name__ == '__main__':
-    test_functions()
-
+def get_user_options(hp, gold):
+    print(f"\nCurrent HP: {hp}, Current Gold: {gold}")
+    print("What would you like to do?\n")
+    print("1) Fight Monster")
+    print("2) Sleep (Restore HP for 5 Gold)")
+    print("3) Quit")
