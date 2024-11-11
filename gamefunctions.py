@@ -123,7 +123,8 @@ def get_user_options(hp, gold):
     print("3) Visit Store")
     print("4) View Inventory")
     print("5) Equip Weapon")
-    print("6) Quit")
+    print("6) Save & Quit")
+    print("7) Quit")
 
 def fight_monster(health, gold, user_inventory, weapon: int):
     #generate a new random monster from my list
