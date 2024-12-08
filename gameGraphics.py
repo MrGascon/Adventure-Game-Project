@@ -4,7 +4,7 @@ This module calls upon gamefunctions.py and runs each and every function multipl
 
 Author: Jake Gascon
 Date: 12/8/2024
-Assignment: Project Adventure Functions - Assignment 13"""
+Assignment: Project Adventure Functions - Assignment 14"""
 
 import pygame
 import random
@@ -21,12 +21,25 @@ GRID_COLS = 10
 
 # Colors
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 RED = (255, 0, 0)
-BLUE = (0, 0, 255)
 
 # Set up the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Game Graphics")
+
+# Load images
+try:
+    knight_img = pygame.image.load("Knight.png")
+    knight_img = pygame.transform.scale(knight_img, (GRID_SIZE, GRID_SIZE))
+except:
+    knight_img = None
+
+try:
+    dragon_img = pygame.image.load("Dragon.png")
+    dragon_img = pygame.transform.scale(dragon_img, (GRID_SIZE, GRID_SIZE))
+except:
+    dragon_img = None
 
 # Initial position of the player square
 player = pygame.Rect(0, 0, GRID_SIZE, GRID_SIZE)
@@ -98,13 +111,24 @@ while running:
 
     # Draw everything
     screen.fill(WHITE)  # Clear screen
-    pygame.draw.rect(screen, RED, player)  # Draw the player
+
+    # Draw the player
+    if knight_img:
+        screen.blit(knight_img, (player.x, player.y))
+    else:
+        pygame.draw.rect(screen, BLACK, player)
+
+    # Draw each monster
     for monster in monsters:
-        pygame.draw.rect(screen, BLUE, monster.rect)  # Draw each monster
+        if dragon_img:
+            screen.blit(dragon_img, (monster.rect.x, monster.rect.y))
+        else:
+            pygame.draw.rect(screen, RED, monster.rect)
 
     # Update the display
     pygame.display.flip()
 
 # Quit Pygame
 pygame.quit()
+
 
